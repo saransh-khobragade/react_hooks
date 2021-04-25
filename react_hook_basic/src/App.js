@@ -1,12 +1,17 @@
-import useFetch from './useFetch'
+import {useRef} from 'react'
 
 const  App = () => {
   
-  const [data,loading] = useFetch('https://jsonplaceholder.typicode.com/posts/1')
+  const temp = useRef(1)
   
+  console.log(temp.current)
+
   return (
     <div>
-      {!loading && data}
+      <input type="input" ref={temp}/>1
+      <input type="input"/>2
+      <button onClick={()=>{temp.current.focus()}}>Focus on 1</button>
+
     </div>
   );
 }
