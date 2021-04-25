@@ -1,13 +1,12 @@
-import useForm from './useForm'
+import useFetch from './useFetch'
 
 const  App = () => {
   
-  const [data,handle] = useForm({username:'',password:''})   //it will run only one time when anything change happened in dom
-
+  const [data,loading] = useFetch('https://jsonplaceholder.typicode.com/posts/1')
+  
   return (
     <div>
-      <input name="username" value={data.value} onChange={handle} ></input>
-      <input name="password" value={data.value} onChange={handle} ></input>
+      {!loading && data}
     </div>
   );
 }
