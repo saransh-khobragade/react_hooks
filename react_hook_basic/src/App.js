@@ -1,18 +1,30 @@
-import {useRef} from 'react'
+import {useRef,useState,useLayoutEffect,useEffect} from 'react'
 
 const  App = () => {
   
-  const temp = useRef(1)
+  const myRef = useRef()
+  const [ data,setData ] = useState({})
+  const [count,setCount] = useState(1)
+
+  useEffect(()=>{
+    fetch('https://jsonplaceholder.typicode.com/todos/'+count)
+    .then(response => response.json())
+    .then(json => {
+      setData(json)
+    })
+  },[count])//changes after count changes
   
-  console.log(temp.current)
-
+  useLayoutEffect(()=>{
+    console.log(JSON.stringify(myRef.current.getBoundingClientRect().width))  //width changes
+  },[data]) //react after dom get painted and watched data
+  
   return (
-    <div>
-      <input type="input" ref={temp}/>1
-      <input type="input"/>2
-      <button onClick={()=>{temp.current.focus()}}>Focus on 1</button>
-
-    </div>
+    <>
+      <div style={{ display:"flex"}}>
+        <div ref={myRef}>{JSON.stringify(data)}</div>
+      </div>
+      <button onClick={()=>setCount(count+1)}>change</button>
+    </>
   );
 }
 
