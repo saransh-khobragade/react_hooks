@@ -1,26 +1,30 @@
-import { useReducer } from 'react'
+import React, { useState } from "react"
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import Home from './Home'
+import About from './About'
+import context from './Context'
 
-function reducer(state,actions){
-  switch(actions.type){
-    case 'inc': return state + 1;
-    case 'dec': return state - 1;
-    default : return state;
-  }
-}
+const App = () => {
 
-const intialState = 0
-
-const  App = () => {
-
-  const [count,dispatch] = useReducer(reducer,intialState)
-  //dispatch will take actions and state will mutate by reducer functions
+  const [globalState,setGlobalState] = useState({name:"ABC"})
 
   return (
-    <div>
-      Count:{count}
-      <button onClick={()=>dispatch({type:'inc'})}>INC</button>
-      <button onClick={()=>dispatch({type:'dec'})}>DEC</button>
-    </div>
+    <Router>
+      <ul>
+        <li>
+          <Link to='/'>Home</Link>
+        </li>
+        <li>
+          <Link to='/about'>About</Link>
+        </li>
+      </ul>
+
+      <context.Provider value={{globalState,setGlobalState}}>
+        <Route path="/" exact component={Home} />
+        <Route path="/about" exact component={About} /> 
+      </context.Provider>
+
+    </Router>
   );
 }
 
